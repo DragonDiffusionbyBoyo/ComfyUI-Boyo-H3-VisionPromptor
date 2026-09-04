@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import re
 
-MAX_PROMPT_CHARS = 7000
+MAX_PROMPT_CHARS = 16000
 
 # Headers that mark the real start of an H3 prompt (used to cut preambles).
 RECOGNIZED_HEADERS = (

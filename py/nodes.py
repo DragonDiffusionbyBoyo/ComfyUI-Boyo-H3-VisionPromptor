@@ -22,7 +22,7 @@ CATEGORY = "H3/Promptor"
 NONE_OPTION = "<none - use CLIP input>"
 SKIP_VISION = "skip (idea only)"
 CUSTOM_VISION = "custom"
-TASK_OPTIONS = ["Auto", "T2VA", "I2VA", "FL2VA", "L2VA", "Ref2VA"]
+TASK_OPTIONS = ["Auto", "T2VA", "I2VA", "FL2VA", "L2VA", "Ref2VA", "Ref2VA_Multi3"]
 MAX_SEED = 0xFFFFFFFF
 
 

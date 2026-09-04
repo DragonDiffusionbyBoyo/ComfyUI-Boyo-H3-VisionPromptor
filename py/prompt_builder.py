@@ -8,11 +8,22 @@ import os
 
 _PROMPTS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "prompts")
 
-TASK_TYPES = ("T2VA", "I2VA", "FL2VA", "L2VA", "Ref2VA")
+# Ref2VA_Multi3 added: 3-scene multi-shot reference generation, separated by ---
+TASK_TYPES = ("T2VA", "I2VA", "FL2VA", "L2VA", "Ref2VA", "Ref2VA_Multi3")
 
 
 def detect_task(task_type: str, n_images: int) -> str:
-    """Resolve the effective task. Auto: 0 images -> T2VA, 1 -> I2VA, 2 -> FL2VA, >=3 -> Ref2VA."""
+    """Resolve the effective task.
+
+    Auto mapping:
+        0 images  -> T2VA
+        1 image   -> I2VA
+        2 images  -> FL2VA
+        >=3 images -> Ref2VA
+
+    Ref2VA_Multi3 must always be selected explicitly — it is never
+    auto-detected because it shares the same image-count signature as Ref2VA.
+    """
     t = (task_type or "Auto").strip()
     if t.lower() != "auto":
         for known in TASK_TYPES:
@@ -35,17 +46,27 @@ def _read_prompt_file(*parts: str) -> str:
 
 
 def load_system_prompt(task: str) -> str:
-    """Base H3 system prompt + task addendum, re-read from disk on every run."""
+    """Base H3 system prompt + task addendum, re-read from disk on every run.
+
+    Ref2VA_Multi3 uses its own addendum (ref2va_multi3.txt) but shares the
+    same base system prompt as every other task.
+    """
     base = _read_prompt_file("h3_system_base.txt")
     addendum = _read_prompt_file("tasks", f"{task.lower()}.txt")
     return base + "\n\n" + addendum
 
 
 def word_budget(task: str, duration: float) -> int:
-    """Target body length in words. Base modes: duration*25. Ref2VA's
-    detailed_description targets 350-500 words -> duration*35 capped at 500."""
+    """Target body length in words.
+
+    Base modes:       duration * 25
+    Ref2VA:           duration * 35, capped at 500  (350-500 word target)
+    Ref2VA_Multi3:    duration * 35 * 3, capped at 1500 (3 full scene blocks)
+    """
     if task == "Ref2VA":
         return min(int(duration * 35), 500)
+    if task == "Ref2VA_Multi3":
+        return min(int(duration * 35 * 3), 1500)
     return int(duration * 25)
 
 
@@ -73,10 +94,18 @@ def build_messages(task, duration, user_idea, vision_context, extra_instructions
 
     user_parts.append(f"Constraint: The video will be {duration} seconds long (approx. {frames} frames).")
 
-    if task == "Ref2VA":
-        user_parts.append(f"Write the detailed_description section at roughly {budget} words "
-                          "(target range 350-500 words; prioritize a complete spoken timeline "
-                          "over mechanically hitting the count).")
+    if task in ("Ref2VA", "Ref2VA_Multi3"):
+        if task == "Ref2VA_Multi3":
+            user_parts.append(
+                f"Write each of the 3 scene blocks with a detailed_description section at roughly "
+                f"{budget // 3} words per block (target range 350-500 words per block; prioritize "
+                f"a complete visual and action timeline over mechanically hitting the count). "
+                f"Total output target is approximately {budget} words across all 3 blocks."
+            )
+        else:
+            user_parts.append(f"Write the detailed_description section at roughly {budget} words "
+                              "(target range 350-500 words; prioritize a complete spoken timeline "
+                              "over mechanically hitting the count).")
     else:
         user_parts.append(f"Write the integrated_multimodal_description body at roughly {budget} words.")
 

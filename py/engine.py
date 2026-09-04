@@ -198,7 +198,7 @@ def _strip_echo(decoded: str, prompt: str, family: str) -> str:
 
 
 def generate_text(clip, system: str, user: str, image_tensor=None, seed: int = 0, temperature: float = 0.7,
-                  top_p: float = 0.95, top_k: int = 64, max_tokens: int = 2048, min_p: float = 0.0,
+                  top_p: float = 0.95, top_k: int = 64, max_tokens: int = 8196, min_p: float = 0.0,
                   repetition_penalty: float = 1.0, use_default_template: bool = False,
                   template_override: str | None = None) -> str:
     """Full chat-format generation using ComfyUI's native CLIP generation stack.
