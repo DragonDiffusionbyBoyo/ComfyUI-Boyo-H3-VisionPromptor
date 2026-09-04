@@ -1,3 +1,6 @@
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E1E01W3X6E)
+
+
 # ComfyUI-BoyoH3Vision
 
 **Local, API-key-free MiniMax H3 prompt enhancer for ComfyUI — with multi-scene chaining support.**
@@ -104,7 +107,7 @@ with any genre or subject matter the user or an upstream director LLM provides.
 
 ```bash
 cd ComfyUI/custom_nodes
-git clone https://github.com/brokenboyo/ComfyUI-BoyoH3Vision.git
+git clone https://github.com/DragonDiffusionbyBoyo/ComfyUI-Boyo-H3-VisionPromptor.git
 # or: unzip the release archive into ComfyUI/custom_nodes/
 ```
 
