@@ -1,0 +1,101 @@
+# TASK ADDENDUM — Ref2Image_2P (Two Subjects + Environment)
+
+This task produces a prompt for a SINGLE STILL IMAGE. There is no timeline,
+no motion, no sequence. Never write timestamps, shot transitions, camera moves
+over time, or any language implying before or after the frame.
+
+Three reference images are supplied, each with a strictly defined role:
+  <Picture 1> — IDENTITY reference (subject one)
+  <Picture 2> — IDENTITY reference (subject two)
+  <Picture 3> — ENVIRONMENT reference (the scene)
+
+These roles are absolute and non-transferable. No picture contributes
+anything to another picture's role. If <Picture 1> and <Picture 2> appear
+to share characteristics — same gender, same build, same hair colour —
+they are still two distinct individuals. Never merge them into one person.
+Never transfer appearance details from one subject to the other.
+
+Output exactly these FIVE fields, in this exact order, each spelled exactly
+as shown, each on its own line before its content:
+
+  subject_definitions:
+  environment_description:
+  spatial_relationship:
+  composition_notes:
+  image_description:
+
+Before you finish, check off all five literal field names against your own
+output. A missing or misspelled field name is a failure even if the content
+is otherwise correct.
+
+== FIELD DEFINITIONS ==
+
+subject_definitions:
+Two lines — one per subject. Bind each subject to their identity reference
+using this exact pattern:
+
+  <Subject 1> is the person shown in <Picture 1>, with [only the identity
+  features clearly visible — hair colour and style, gender, build, skin
+  tone, distinguishing marks]. Omit any feature not clearly visible.
+  <Subject 2> is the person shown in <Picture 2>, with [only the identity
+  features clearly visible — hair colour and style, gender, build, skin
+  tone, distinguishing marks]. Omit any feature not clearly visible.
+
+Extract ONLY from each picture: face, hair, build, distinguishing marks.
+Extract NOTHING: clothing, background, pose, expression, or environment.
+If either reference is a character sheet showing multiple views of the same
+person, treat all figures as one individual.
+Clothing comes entirely from the user's idea, not from either reference image.
+
+environment_description:
+One paragraph. Extract from <Picture 3> ONLY: setting type, background
+composition, spatial depth, ambient lighting quality, direction, and colour
+temperature. Do not describe any people, poses, or clothing visible in
+<Picture 3>. Do not invent environmental detail not present in <Picture 3>
+unless the user's idea explicitly adds to it.
+
+spatial_relationship:
+Two to three sentences. Define where <Subject 1> and <Subject 2> are
+positioned relative to each other and relative to the frame:
+  — Left/right, foreground/background, facing each other or away
+  — Physical proximity (touching, close, separated, distant)
+  — Eye contact or gaze direction if relevant to the user's idea
+  — Which subject is more prominent in the frame if either is
+
+This field is the only place subject positioning is defined. Do not
+restate it in image_description — reference it there by drawing on
+what this field established.
+
+composition_notes:
+Two to four sentences. State:
+  — Camera distance and framing (close-up, medium, wide, etc.)
+  — Camera angle (eye-level, low angle, high angle, dutch tilt)
+  — Depth of field treatment (sharp throughout, subjects sharp/
+    background soft, etc.)
+  — Any negative space or environmental framing elements worth preserving
+
+Do not restate subject identity or repeat spatial relationship here.
+This field is purely about the geometry of the frame.
+
+image_description:
+200–300 words. This is the main generation prompt. Bring together:
+  — <Subject 1> and <Subject 2> identity from subject_definitions (hair,
+    gender, build, distinguishing marks) — woven naturally, not listed
+  — Clothing and style for both subjects from the user's idea ONLY —
+    never from any reference image unless explicitly instructed
+  — Their spatial relationship from spatial_relationship
+  — The environment from environment_description
+  — The framing and composition from composition_notes
+  — Lighting: name the source, direction, and quality explicitly
+
+Write in the present tense of the frozen frame: "stands", "faces",
+"holds" — never "walks in", "turns to", "begins to", "will be".
+Concrete nouns only. No mood words, no evaluative adjectives, no
+internal states. Every word must describe something physically visible
+in the frame.
+
+CRITICAL — SUBJECT IDENTITY FIREWALL: At no point may appearance details
+from <Picture 1> appear in the description of <Subject 2>, or vice versa.
+If both subjects share a visible characteristic (same hair colour, same
+build), state it independently for each subject — never as a shared
+attribute, and never by referencing the other subject's picture.

@@ -1,0 +1,107 @@
+# TASK ADDENDUM — Ref2Image_2P_Pose (Two Subjects + Environment + Pose)
+
+This task produces a prompt for a SINGLE STILL IMAGE. There is no timeline,
+no motion, no sequence. Never write timestamps, shot transitions, camera moves
+over time, or any language implying before or after the frame.
+
+Four reference images are supplied, each with a strictly defined role:
+  <Picture 1> — IDENTITY reference (subject one)
+  <Picture 2> — IDENTITY reference (subject two)
+  <Picture 3> — ENVIRONMENT reference (the scene)
+  <Picture 4> — POSE reference (body positions, spatial relationship, and action only)
+
+These roles are absolute and non-transferable. No picture contributes
+anything to another picture's role. If <Picture 1>, <Picture 2>, or
+<Picture 4> appear to share characteristics — same gender, same build,
+same hair colour — they are still distinct individuals. Never merge them.
+Never transfer appearance details between subjects. The pose reference
+contributes ZERO identity information regardless of who appears in it.
+
+Output exactly these SIX fields, in this exact order, each spelled exactly
+as shown, each on its own line before its content:
+
+  subject_definitions:
+  environment_description:
+  pose_extraction:
+  spatial_relationship:
+  composition_notes:
+  image_description:
+
+Before you finish, check off all six literal field names against your own
+output. A missing or misspelled field name is a failure even if the content
+is otherwise correct.
+
+== FIELD DEFINITIONS ==
+
+subject_definitions:
+Two lines — one per subject. Bind each subject to their identity reference
+using this exact pattern:
+
+  <Subject 1> is the person shown in <Picture 1>, with [only the identity
+  features clearly visible — hair colour and style, gender, build, skin
+  tone, distinguishing marks]. Omit any feature not clearly visible.
+  <Subject 2> is the person shown in <Picture 2>, with [only the identity
+  features clearly visible — hair colour and style, gender, build, skin
+  tone, distinguishing marks]. Omit any feature not clearly visible.
+
+Extract ONLY from each picture: face, hair, build, distinguishing marks.
+Extract NOTHING: clothing, background, pose, expression, or environment.
+If either reference is a character sheet showing multiple views of the same
+person, treat all figures as one individual.
+Clothing comes entirely from the user's idea, not from any reference image.
+
+environment_description:
+One paragraph. Extract from <Picture 3> ONLY: setting type, background
+composition, spatial depth, ambient lighting quality, direction, and colour
+temperature. Do not describe any people, poses, or clothing visible in
+<Picture 3>. Do not invent environmental detail not present in <Picture 3>
+unless the user's idea explicitly adds to it.
+
+pose_extraction:
+One paragraph. Extract from <Picture 4> ONLY:
+  — Body position and orientation of each figure relative to camera
+  — Limb angles and placement for each figure
+  — The activity or action being performed — name it explicitly and
+    concretely for each figure (e.g. 'left figure standing upright with
+    arms at sides', 'right figure leaning forward with one hand extended')
+  — Camera distance and framing (close-up, medium, wide, etc.)
+  — Spatial orientation of each figure (facing camera, three-quarter
+    turn, profile, back to camera, etc.)
+
+Extract NOTHING from <Picture 4>:
+  — Clothing, fabrics, colours, or textures
+  — Faces, skin tone, or hair
+  — Background or environment
+  — Props beyond their functional role in the action
+
+If the two figures in <Picture 4> are different genders, sizes, or builds
+from <Subject 1> and <Subject 2> — that is irrelevant. Extract only
+position and action. Identity comes exclusively from <Picture 1> and
+<Picture 2>.
+
+spatial_relationship:
+Two to three sentences. Using the pose_extraction as the structural
+anchor, define where <Subject 1> and <Subject 2> are positioned:
+  — Which figure in <Picture 4> maps to <Subject 1> and which to
+    <Subject 2> — determined by the user's idea, not by appearance
+    in the pose reference
+  — Left/right, foreground/background, facing each other or away
+  — Physical proximity (touching, close, separated, distant)
+  — Eye contact or gaze direction if relevant to the user's idea
+
+composition_notes:
+Two to four sentences. State:
+  — Camera distance and framing from pose_extraction
+  — Camera angle (eye-level, low angle, high angle, dutch tilt)
+  — Depth of field treatment (sharp throughout, subjects sharp/
+    background soft, etc.)
+  — Any negative space or environmental framing elements worth preserving
+
+Do not restate subject identity, pose detail, or spatial relationship here.
+This field is purely about the geometry of the frame.
+
+image_description:
+200–300 words. This is the main generation prompt. Bring together:
+  — <Subject 1> and <Subject 2> identity from subject_definitions —
+    woven naturally, not listed
+  — Clothing and style

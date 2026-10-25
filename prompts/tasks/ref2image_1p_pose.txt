@@ -1,0 +1,104 @@
+# TASK ADDENDUM — Ref2Image_1P_Pose (Single Subject + Environment + Pose)
+
+This task produces a prompt for a SINGLE STILL IMAGE. There is no timeline,
+no motion, no sequence. Never write timestamps, shot transitions, camera moves
+over time, or any language implying before or after the frame.
+
+Three reference images are supplied, each with a strictly defined role:
+  <Picture 1> — IDENTITY reference either as a single image or as a character sheet demonstrating poses and angles (the subject)
+  <Picture 2> — ENVIRONMENT reference (the scene)
+  <Picture 3> — POSE reference (body position and action only)
+
+These roles are absolute and non-transferable. No picture contributes
+anything to another picture's role. If <Picture 1> and <Picture 3> appear
+to share characteristics (same gender, same hair colour, same build) —
+<Picture 3> still contributes ZERO identity information. Identity comes
+exclusively from <Picture 1>.
+
+Output exactly these FIVE fields, in this exact order, each spelled exactly
+as shown, each on its own line before its content:
+
+  subject_definitions:
+  environment_description:
+  pose_extraction:
+  composition_notes:
+  image_description:
+
+Before you finish, check off all five literal field names against your own
+output. A missing or misspelled field name is a failure even if the content
+is otherwise correct.
+
+== FIELD DEFINITIONS ==
+
+subject_definitions:
+One line only. Bind the subject to their identity reference using this
+exact pattern:
+
+  <Subject 1> is the person represented as a single image of a person or as a character sheet with several angles and poses shown in <Picture 1>, with [hair colour and
+  style], [apparent age range], [gender], [build], and [any distinguishing
+  visible marks or features].
+
+Extract ONLY from <Picture 1>: face, hair, build, distinguishing marks.
+Extract NOTHING from <Picture 1>: clothing, background, pose, expression,
+or environment. Clothing comes from the user's idea, not this field.
+If <Picture 1> is a character sheet showing multiple views of the same
+person, treat all figures as one individual and extract their consistent
+identity features only.
+
+environment_description:
+One paragraph. Extract from <Picture 2> ONLY: setting type, background
+composition, spatial depth, ambient lighting quality, direction, and colour
+temperature. Do not describe any people, poses, or clothing visible in
+<Picture 2>. Do not invent environmental detail not present in <Picture 2>
+unless the user's idea explicitly adds to it.
+
+pose_extraction:
+One paragraph. Extract from <Picture 3> ONLY:
+  — Body position and orientation relative to camera
+  — Limb angles and placement
+  — The activity or action being performed (name it explicitly:
+    "mid-drive batting stance", "crouched behind the wicket",
+    "arms raised above head mid-jump")
+  — Camera distance and framing (close-up, medium, wide, etc.)
+  — Spatial orientation (facing camera, three-quarter turn, profile, etc.)
+
+Extract NOTHING from <Picture 3>:
+  — Clothing, fabrics, colours, or textures
+  — Face, skin tone, or hair
+  — Background or environment
+  — Props beyond their functional role in the action (grip position and
+    implement type = permitted; colour, brand, markings = forbidden)
+
+If <Picture 3> contains multiple figures, extract only the positional
+and spatial relationship between them — not any identity information
+from either figure.
+
+composition_notes:
+Two to four sentences. Synthesise the pose_extraction camera distance and
+framing with the environment_description spatial depth to state:
+  — Where <Subject 1> sits in the frame (left, centre, right; foreground,
+    midground, background)
+  — The camera angle (eye-level, low angle, high angle, dutch tilt)
+  — Depth of field treatment (sharp throughout, subject sharp/background
+    soft, etc.)
+  — Any negative space or framing elements worth preserving
+
+Do not restate subject identity or repeat environment detail here.
+This field is purely about the geometry of the frame.
+
+image_description:
+150–250 words. This is the main generation prompt. Bring together:
+  — <Subject 1>'s identity from subject_definitions (hair, age, gender,
+    build, distinguishing marks) — woven naturally, not listed
+  — Clothing and style from the user's idea ONLY — never from any
+    reference image unless the user explicitly instructs it
+  — The activity and body position from pose_extraction
+  — The environment from environment_description
+  — The framing and composition from composition_notes
+  — Lighting: name the source, direction, and quality explicitly
+
+Write in the present tense of the frozen frame: "stands", "holds",
+"faces" — never "walks in", "turns to", "begins to", "will be".
+Concrete nouns only. No mood words, no evaluative adjectives, no
+internal states. Every word must describe something physically visible
+in the frame.

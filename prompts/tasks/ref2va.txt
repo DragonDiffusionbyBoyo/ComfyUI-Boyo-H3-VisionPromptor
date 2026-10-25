@@ -1,20 +1,143 @@
 # TASK ADDENDUM — Ref2VA (Full-Reference Mode)
 
-Full-reference mode outputs SIX sections in this fixed order:
-  subject_definitions: / summary: / retention_analysis: / detailed_description: /
-  overall_soundscape: / non_diegetic_music:
+Ref2VA has NO alignment instruction line. Never write "How the reference
+pictures align..." or "For the target video, at 0.00 seconds..." — those
+belong to I2VA/FL2VA/L2VA only. Begin directly with the first field below.
 
-subject_definitions: define EVERY referenced subject once, each on its own line, with
-stable identity anchors (hair, approximate age, gender, wardrobe WITH colors, signature
-accessories, distinguishing props). Use <Subject N> for reusable visible content and
-<Picture N> for concrete frame anchors; a label keeps the same meaning in ALL later sections.
-summary: one short English paragraph opening with square-bracketed task-type prefixes
-joined by " + " (e.g. [reference generation], [keyframe completion + reference generation]).
-Use only already-defined labels; introduce no new ones here.
-retention_analysis: one line per label with the EXACT fixed markers — visible content:
-fully_preserved | partially_preserved | attribute_transfer | weak_reference; audio:
-fully_copy | partially_copy | reference | weak_reference. Format per label:
-<Subject 1> (appears in [Shot 1], [Shot 2]): fully_preserved - ...
-detailed_description: 350–500 English words. Establish the style in one or two sentences
-BEFORE [Shot 1]. Insert each reference label at its first appearance, then reuse it.
-All shot, camera, speaker, <d> dialogue, <scenetrans>/<cutoff>, and on-screen-text rules from the base guide apply unchanged.
+Output exactly these SIX fields, in this exact order, each spelled exactly
+as shown, each on its own line before its content:
+
+  subject_definitions:
+  summary:
+  retention_analysis:
+  detailed_description:
+  overall_soundscape:
+  non_diegetic_music:
+
+Before you finish, check off all six literal field names against your own
+output. A missing or misspelled field name is a failure of this task even if
+the content under it is otherwise correct. overall_soundscape and
+non_diegetic_music are defined once, identically for every mode, in the base
+prompt — do not redefine them here, just supply genuine content for them.
+
+== USER-SUPPLIED <Audio N> / <Video N> TAGS ==
+
+Global rule 8 (closed reference set) stops you INVENTING an asset label that
+was never given to you. It does not apply to a label the user's own idea or
+extra_instructions text already contains — if the user writes "<Audio 1>" or
+"<Video 1>" themselves, that tag is supplied ground truth, not a
+hallucination candidate, and must be carried through, not stripped out.
+
+You cannot hear audio or watch video. Treat any user-supplied <Audio N> or
+<Video N> tag as an opaque literal token: reproduce it exactly, in the exact
+form the user wrote it, everywhere it belongs (subject_definitions,
+retention_analysis, detailed_description). Never paraphrase it and never
+invent a description of what it sounds like or shows — only the ROLE the
+user states for it (whose voice it is, what scene it supplies) is usable
+content; its actual content is not yours to describe.
+
+Still never invent a <Video N>/<Audio N> that has no role stated anywhere in
+the user's text. But once the user has written one in with a stated role,
+dropping it partway through the six fields is a failure exactly as bad as
+inventing one that was never supplied.
+
+== SUBJECT, PICTURE, AND AUDIO DEFINITIONS ==
+
+subject_definitions: one line per referenced item. <Subject N> for reusable
+visible content (people, objects, styles, actions), <Picture N> for a
+concrete frame anchor. Stable identity anchors: hair, age, gender, wardrobe
+WITH colors, signature accessories. Only define labels for assets actually
+supplied — see global rule 8 and the tag note above. When only images are
+supplied, this section contains ONLY <Subject N> and <Picture N> lines.
+
+A <Picture N> that anchors a <Subject N>'s identity does NOT get its own
+standalone subject_definitions line unless it is ALSO used independently
+elsewhere as its own frame anchor (its exact composition reproduced in a
+specific shot). Fold it into the subject's own line instead:
+
+  <Subject 1> is the woman shown in <Picture 1>, with long dark hair, a blue
+  cardigan, and a thin silver necklace.
+
+When a <Picture N> genuinely does stand alone as an independent frame
+anchor, give it its own line — but that line must state what specifically
+about the picture (composition, framing, lighting) is being retained, never
+just restate that the picture exists.
+
+When an <Audio N> is a voice-timbre reference for a subject who speaks, its
+wiring line here is MANDATORY, not optional, and every other field's
+reference to that <Audio N> depends on it existing first — retention_analysis
+and summary must never mention an <Audio N> that has no matching definition
+line here. Define it against that subject and assign it the SAME global
+speaker ID used later in detailed_description:
+
+  <Audio 1> is the voice-timbre reference for <Subject 1> (S1).
+
+That line is the ONLY place <Audio N> appears in the whole output. Once
+defined, its job is finished:
+- Never repeat the <Audio N> tag anywhere in detailed_description, summary,
+  or retention_analysis's reason text — not as a stage direction ("she
+  speaks with <Audio 1>"), not inline on a line of dialogue, nowhere.
+- Never let the tag substitute for, delay, or replace the subject's actual
+  spoken line. The subject speaks exactly like any other speaking subject —
+  (S1) plus a normal <d>...</d> block containing the user's exact words —
+  every single time, with no exception for audio-wired subjects. If the user
+  gave you dialogue to speak, that dialogue must appear in
+  detailed_description verbatim inside <d>; wiring the voice reference is
+  never a reason to omit, shorten, or gesture at the line instead of writing
+  it out.
+
+Correct pattern, given a subject wired to <Audio 1> who says "What have we
+got here?":
+
+  subject_definitions: <Audio 1> is the voice-timbre reference for
+  <Subject 1> (S1).
+
+  detailed_description: ...<Subject 1> (S1) stops, tilts her head toward the
+  sphere, and says, <d>[English] What have we got here?</d>...
+
+Wrong: "<Subject 1> speaks with <Audio 1>" with no <d> block. Wrong: a <d>
+block with no (S1) tag. Wrong: the dialogue omitted entirely because the
+audio tag was mentioned instead.
+
+summary: one paragraph, opening with a bracketed task-type prefix —
+[reference generation], [keyframe completion + reference generation], etc.
+Use only labels already defined above; introduce no new ones. A voice-timbre
+reference adds "+ audio reference" to the prefix; only use "audio reuse" if
+the user has stated the exact audio is copied verbatim rather than
+referenced for timbre or style.
+
+retention_analysis: one line per label defined above — no more, no fewer.
+Visible content: fully_preserved | partially_preserved | attribute_transfer |
+weak_reference. Audio: fully_copy | partially_copy | reference |
+weak_reference. Format: <Subject 1> (appears in [Shot 1], [Shot 2]):
+fully_preserved - reason. A voice-timbre-only <Audio N> is normally
+"reference", never "fully_copy", unless the user states the audio itself is
+reused verbatim.
+
+== REFERENCE IMAGE SUPPLIES THE SUBJECT, NOT THE ENVIRONMENT ==
+
+A <Picture N> that anchors a <Subject N>'s identity supplies that subject's
+appearance ONLY — hair, wardrobe, markings, build, expression. It does NOT
+supply the surrounding environment unless the user's idea places that
+subject back in the same setting. If the idea moves the subject to a new
+location, the reference image's original background must not appear
+anywhere in detailed_description — describe only the new setting the idea
+specifies. Never let a reference image's original backdrop bleed into a shot
+set somewhere else, even in passing.
+
+This does not apply when the user explicitly uses a reference image AS the
+scene or location itself (e.g. "the scene in image two") rather than as a
+subject anchor — in that case the image's environment is exactly what should
+be retained and described.
+
+== detailed_description ==
+
+350–500 English words. One or two sentences of style BEFORE [Shot 1], then
+shots in playback order using the base guide's camera and dialogue rules
+unchanged. At a <Subject N>'s first clear appearance, describe it fully;
+reuse the label afterward without redefining it.
+
+MULTIPLE UNRELATED SUBJECTS: if two or more subjects come from images with no
+obvious shared scene or action, invent ONE simple, concrete, physically
+plausible scenario that brings them together and commit to it fully — do not
+cut back and forth between them to fill the word count.

@@ -1,0 +1,43 @@
+# TASK ADDENDUM — Ref2VA_Multi3 (3-Scene Multi-Shot Reference Generation)
+
+A reference image is provided. Do NOT write an image-alignment instruction line.
+
+Output EXACTLY 3 complete scene blocks separated by --- on its own line between
+blocks. Do NOT place --- after the final block.
+
+Each scene block must contain ALL six sections in full — no abbreviation,
+inheritance, or cross-reference to other scene blocks. Every scene block
+is completely self-contained:
+
+  subject_definitions:
+  summary:
+  retention_analysis:
+  detailed_description:
+  overall_soundscape:
+  non_diegetic_music:
+
+<Subject 1> must be described identically in every scene block, always
+anchored back to <Picture 1> — never to the previous scene block.
+
+<Subject 2> describes the environment for that scene and may evolve across
+scene blocks to advance the narrative.
+
+Each scene's detailed_description must directly and visually realise that
+scene's summary. It is strictly forbidden to copy or repeat the same
+detailed_description across scene blocks.
+
+Each detailed_description must be no longer than 150 words. Be concise and 
+specific — these are 10-second video beats, not full scenes.
+
+Each scene block's detailed_description must differ meaningfully from the
+others in:
+- Camera angle, framing, and movement
+- Subject body position, action, and movement
+- Environment detail and atmospheric state
+- Any other elements present in the scene
+
+Each scene represents a distinct 10-second temporal beat advancing the
+narrative forward from the user's idea. Treat the 3 scene blocks as:
+- Scene 1: establish the situation from the user's idea
+- Scene 2: develop or escalate it
+- Scene 3: peak or resolve it

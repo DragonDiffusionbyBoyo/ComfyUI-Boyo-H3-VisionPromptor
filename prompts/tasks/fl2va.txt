@@ -7,11 +7,72 @@ one blank line:
 
 How the reference pictures align with the target video — <Picture 1> (from [Shot 1]) aligns with the 0.00-second mark of the target video; <Picture 2> (from [Shot N]) aligns with the S.SS-second mark of the target video.
 
+S.SS here, and every shot timestamp inside the prompt body, uses the same MM:SS.mmm
+format required everywhere else in this system (e.g. "00:08.000", never "8.00.000" or
+"8.00:000"). The alignment line's own S.SS value is the exception — that one field is
+just the plain seconds count to two decimals (e.g. "8.00"), not MM:SS.mmm — but every
+in-body [Shot N] timestamp still follows MM:SS.mmm exactly.
+
+== SINGLE SHOT IS THE STRONG DEFAULT ==
+
 Favor a SINGLE shot so the model can interpolate continuously from the first frame to
-the last frame. Use multiple shots only when the user explicitly asks for them.
+the last frame. Use multiple shots ONLY when the user explicitly asks for a cut or an
+explicit scene change — never as a way to resolve a reveal, a pose change, a
+composition shift, or a camera-distance change between the two reference frames. All of
+those are exactly what camera motion within one shot is for for; a cut is not a
+shortcut for describing them.
+
+If <Picture 1> and <Picture 2> differ in framing or distance (e.g. a close medium shot
+opening out into a wider posture, as in the example below), that difference is written
+as ONE continuous camera move across the single shot — Zoom Out / Pull Out / Tracking
+Shot / Arc Shot, per the official vocabulary in the base prompt — never as a second
+[Shot N] cutting to the wider framing. A cut is only correct here if the user's own idea
+explicitly asks for one.
+
+The arrival of non-diegetic music, a musical sting or swell, or a character reaching the
+climax or final line of a piece of dialogue are NOT grounds for a cut either, however
+natural a cut to a tight close-up might feel at that moment in ordinary film or
+music-video editing. Deliver the line and let the music swell WITHIN the same
+continuous shot and camera move already in progress — do not cut to a new [Shot N] just
+because the dialogue or the music is reaching its peak.
+
+== THE MOTION PATH MUST FILL THE WHOLE DURATION ==
 
 Do not write two static image descriptions. Supply the motion path that connects them:
 first-frame state → observable intermediate changes → progressively narrowing
 differences → last-frame state. The video must LAND EXACTLY on <Picture 2> at the end:
 the final shot must settle into the exact pose, spacing, composition, camera angle,
 and lighting established by <Picture 2>.
+
+That motion path must occupy the FULL stated duration, not just its opening moment.
+Resolving all the action (a line of dialogue, a gesture) in the first second and then
+writing "the camera remains fixed" or otherwise going static for the rest of the
+duration is a failure — the interpolation model is given nothing to work with for
+however many seconds remain, and typically fails to move naturally toward <Picture 2>.
+If the user's idea only gives you a single instant of action (e.g. one line of
+dialogue), you must still invent enough concrete physical motion — a shift in posture,
+a reaction, a completing gesture, the camera's own continuous move toward the final
+framing — to occupy the remaining time, consistent with the user's intent and landing
+correctly on <Picture 2>.
+
+== WORKED EXAMPLE ==
+
+Given <Picture 1> as a centered medium shot of a seated woman and <Picture 2> as a wider
+shot revealing her full seated posture and a pillow beside her, 8 seconds, with the idea
+that she delivers one line of dialogue:
+
+WRONG (two static descriptions joined by a cut):
+
+  [Shot 1] A medium shot of the woman seated on the sofa... she says, <d>[English] This
+  bloody prompt better work.</d> The camera remains static.
+
+  [Shot 2] At 00:08.000, the camera cuts to a wider shot revealing her full posture...
+
+CORRECT (one shot, continuous motion, filling the full duration):
+
+  [Shot 1] A medium shot centered on the woman (S1) seated on the sofa, her expression
+  slightly annoyed. She says, <d>[English] This bloody prompt better work.</d> As she
+  finishes speaking, the camera pulls out with small amplitude at slow speed across the
+  remaining duration, gradually revealing her full seated posture, hands settling in her
+  lap, and the houndstooth pillow beside her, her expression and the lighting holding
+  steady as the wider framing settles into place by 00:08.000.
