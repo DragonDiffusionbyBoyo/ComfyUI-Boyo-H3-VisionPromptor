@@ -1,0 +1,82 @@
+# TASK ADDENDUM — Ref2Image_1P (One Subject)
+
+This task produces a prompt for a SINGLE STILL IMAGE. There is no timeline,
+no motion, no sequence. Never write timestamps, shot transitions, camera moves
+over time, or any language implying before or after the frame.
+
+One reference image is supplied with a strictly defined role:
+  <Picture 1> — IDENTITY reference (the subject)
+
+This role is absolute. <Picture 1> contributes ONLY face, hair, build,
+and distinguishing marks. Never extract clothing, background, pose,
+expression, or environment from it.
+
+Output exactly these FOUR fields, in this exact order, each spelled exactly
+as shown, each on its own line before its content:
+
+  subject_definition:
+  environment_description:
+  composition_notes:
+  image_description:
+
+Before you finish, check off all four literal field names against your own
+output. A missing or misspelled field name is a failure even if the content
+is otherwise correct.
+
+== FIELD DEFINITIONS ==
+
+subject_definition:
+One line. Bind the subject to their identity reference using this exact
+pattern:
+
+  <Subject 1> is the person shown in <Picture 1>, with [only the identity
+  features clearly visible — hair colour and style, gender, build, skin
+  tone, distinguishing marks]. Omit any feature not clearly visible.
+
+Extract ONLY from <Picture 1>: face, hair, build, distinguishing marks.
+Extract NOTHING: clothing, background, pose, expression, or environment.
+If the reference is a character sheet showing multiple views of the same
+person, treat all figures as one individual.
+Clothing comes entirely from the user's idea, not from the reference image.
+
+environment_description:
+One paragraph. Describe the setting entirely from the user's idea. If no
+environment is specified, invent a coherent, concrete scene consistent with
+the subject and mood implied by the user's idea. State: setting type,
+background composition, spatial depth, ambient lighting quality, direction,
+and colour temperature. Do not describe any people or poses. Do not extract
+environment from <Picture 1>.
+
+composition_notes:
+Two to four sentences. State:
+  — Camera distance and framing (close-up, medium, wide, etc.)
+  — Camera angle (eye-level, low angle, high angle, dutch tilt)
+  — Depth of field treatment (sharp throughout, subject sharp/
+    background soft, etc.)
+  — Any negative space or environmental framing elements worth preserving
+
+Do not restate subject identity here. This field is purely about the
+geometry of the frame.
+
+image_description:
+200–250 words. This is the main generation prompt. Bring together:
+  — <Subject 1> identity from subject_definition (hair, gender, build,
+    distinguishing marks) — woven naturally, not listed
+  — Clothing and style from the user's idea ONLY — never from the
+    reference image unless explicitly instructed
+  — The environment from environment_description
+  — The framing and composition from composition_notes
+  — Lighting: name the source, direction, and quality explicitly
+
+Write in the present tense of the frozen frame: "stands", "faces",
+"holds" — never "walks in", "turns to", "begins to", "will be".
+Concrete nouns only. No mood words, no evaluative adjectives, no
+internal states. Every word must describe something physically visible
+in the frame.
+
+CRITICAL — IDENTITY FIREWALL: Extract ONLY face, hair, build, and
+distinguishing marks from <Picture 1>. Clothing, background, pose,
+and expression are sourced exclusively from the user's idea. If the
+user provides no clothing detail, invent period and context appropriate
+attire consistent with the scene — never default to what the subject
+wears in the reference image.
