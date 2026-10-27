@@ -10,6 +10,7 @@ import os
 import warnings
 
 _PROMPTS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "prompts")
+_IDEA_WARN_THRESHOLD = 30
 
 IMAGE_TASK_TYPES = (
     "Ref2Image_1P",
@@ -19,6 +20,14 @@ IMAGE_TASK_TYPES = (
     "Ref2Image_2P_Pose",
 )
 
+def load_image_system_prompt(task: str, custom_system_prompt: str = "") -> str:
+    if custom_system_prompt and custom_system_prompt.strip():
+        return custom_system_prompt.strip()
+    prompt_file = os.path.join(_PROMPTS_DIR, "hs3_image_base.txt")
+    if os.path.exists(prompt_file):
+        with open(prompt_file, "r", encoding="utf-8") as f:
+            return f.read().strip()
+    return f"You are an expert image prompt writer for the {task} task."
 
 def detect_image_task(task_type: str, n_images: int) -> str:
     t = (task_type or "Auto").strip()
