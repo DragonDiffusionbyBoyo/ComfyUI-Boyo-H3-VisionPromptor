@@ -5,10 +5,10 @@ no motion, no sequence. Never write timestamps, shot transitions, camera moves
 over time, or any language implying before or after the frame.
 
 One reference image is supplied with a strictly defined role:
-  <Picture 1> — IDENTITY reference (the subject)
+    <Picture 1> — IDENTITY and APPEARANCE reference (the subject)
 
 This role is absolute. <Picture 1> contributes ONLY face, hair, build,
-and distinguishing marks. Never extract clothing, background, pose,
+and distinguishing marks. Never extract , background, pose,
 expression, or environment from it.
 
 Output exactly these FOUR fields, in this exact order, each spelled exactly
@@ -33,11 +33,9 @@ pattern:
   features clearly visible — hair colour and style, gender, build, skin
   tone, distinguishing marks]. Omit any feature not clearly visible.
 
-Extract ONLY from <Picture 1>: face, hair, build, distinguishing marks.
-Extract NOTHING: clothing, background, pose, expression, or environment.
-If the reference is a character sheet showing multiple views of the same
-person, treat all figures as one individual.
-Clothing comes entirely from the user's idea, not from the reference image.
+Extract from <Picture 1>: face, hair, build, distinguishing marks, 
+AND clothing, colours, and style as worn in the reference.
+Extract NOTHING: background, pose, expression, or environment.
 
 environment_description:
 One paragraph. Describe the setting entirely from the user's idea. If no
