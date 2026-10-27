@@ -48,7 +48,7 @@ IMAGE_VISION_SYSTEM_PROMPT = (
 
 IMAGE_TASK_SLOT_PRESETS: dict[str, dict[int, str]] = {
     "Ref2Image_1P": {
-        0: "image_identity",
+        0: "image_identity_with_appearance",
     },
     "Ref2Image_1P_Scene": {
         0: "image_identity",
@@ -74,12 +74,11 @@ IMAGE_TASK_SLOT_PRESETS: dict[str, dict[int, str]] = {
 
 # Human-readable slot role labels for debug output and warnings.
 _SLOT_ROLE_LABELS: dict[str, str] = {
-    "image_identity":    "IDENTITY",
-    "image_environment": "ENVIRONMENT",
-    "image_pose":        "POSE",
+    "image_identity":                "IDENTITY",
+    "image_identity_with_appearance": "IDENTITY",
+    "image_environment":             "ENVIRONMENT",
+    "image_pose":                    "POSE",
 }
-
-
 def _load_preset(preset_key: str) -> str:
     """Read a single preset instruction from vision_presets.json."""
     presets = _vision.load_vision_presets()
