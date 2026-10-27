@@ -23,11 +23,23 @@ IMAGE_TASK_TYPES = (
 def load_image_system_prompt(task: str, custom_system_prompt: str = "") -> str:
     if custom_system_prompt and custom_system_prompt.strip():
         return custom_system_prompt.strip()
-    prompt_file = os.path.join(_PROMPTS_DIR, "hs3_image_base.txt")
-    if os.path.exists(prompt_file):
-        with open(prompt_file, "r", encoding="utf-8") as f:
-            return f.read().strip()
-    return f"You are an expert image prompt writer for the {task} task."
+    
+    # Load base system prompt
+    base_file = os.path.join(_PROMPTS_DIR, "hs3_image_base.txt")
+    if os.path.exists(base_file):
+        with open(base_file, "r", encoding="utf-8") as f:
+            base = f.read().strip()
+    else:
+        base = f"You are an expert image prompt writer for the {task} task."
+    
+    # Load and append task-specific addendum
+    task_file = os.path.join(_PROMPTS_DIR, "tasks", f"{task.lower()}.txt")
+    if os.path.exists(task_file):
+        with open(task_file, "r", encoding="utf-8") as f:
+            addendum = f.read().strip()
+        return base + "\n\n" + addendum
+    
+    return base
 
 def detect_image_task(task_type: str, n_images: int) -> str:
     t = (task_type or "Auto").strip()
